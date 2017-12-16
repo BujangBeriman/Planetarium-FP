@@ -81,6 +81,17 @@ GLuint earthTexture, sunTexture, backgroundTexture; //The id of the textur
 GLUquadric *quad;
 GLfloat rotate;
 
+void LookAt()
+{
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  perspectiveGL(20.0,1000/500,1,5);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+    gluLookAt(0, 2, 1, 0, 0, -1, 0, 1, 0);
+}
+
 void backgroundRendering(){
     glDisable(GL_DEPTH);
     quad = gluNewQuadric();
@@ -110,7 +121,7 @@ void initRendering() {
     glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
     glEnable(GL_COLOR_MATERIAL);
-    backgroundRendering();
+//    backgroundRendering();
     sunRendering();
     earthRendering();
 }
@@ -129,26 +140,28 @@ void displayBackground(){
 }
 
 void displayEarth(){
-    glLoadIdentity();
+    glPushMatrix();
     AmbientLighting();
     float x = cos((rotate)*3.14159265/180);
     float z = sin((rotate+180)*3.14159265/180);
+    printf("%f,%f\n",x,z);
     PointLight(x,0,z, 0, 1, 1);
     glRotatef(180,0.0,0.0,1.0);
     glTranslatef(0.0f, 0.0f, -1.0f);
     glBindTexture(GL_TEXTURE_2D, earthTexture);
     glRotatef(90,1.0f,0.0f,0.0f);
     glRotatef(rotate,0.0f,0.0f,1.0f);
-    glTranslatef(0.4, 0.0, 0.0);
+    glTranslatef(0.6, 0.0, 0.0);
     glRotatef(rotate,0.0,0.0,1.0);
     gluQuadricTexture(quad,1);
     gluSphere(quad,0.01,20,20);
+    glPopMatrix();
 }
 
 void displaySun(){
-    glLoadIdentity();
+    glPushMatrix();
     AmbientLighting();
-    PointLight(0,1,1, 1, 0, 0);
+    PointLight(0,0,0, 1, 0, 0);
     glRotatef(180,0.0,0.0,1.0);
     glTranslatef(0.0f, 0.0f, -1.0f);
     glBindTexture(GL_TEXTURE_2D, sunTexture);
@@ -156,11 +169,14 @@ void displaySun(){
     glRotatef(rotate,0.0f,0.0f,1.0f);
     gluQuadricTexture(quad,1);
     gluSphere(quad,0.05,20,20);
+    glPopMatrix();
 }
 
 void
 display( void )
 {
+    glLoadIdentity();
+    LookAt();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glMatrixMode(GL_MODELVIEW);
@@ -168,10 +184,11 @@ display( void )
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 //    displayBackground();
+
     displayEarth();
     displaySun();
-    glLoadIdentity();
-    gluLookAt(0.0, 0.0, -10.0, 0,0,0, 0,1.0,0);
+//    perspectiveGL(99.0, 1.2,0.6,100);
+//    gluLookAt(20, 20, 10, 2, 0, 0, 0, 1, 0);
     glutSwapBuffers();
 
 }
@@ -243,7 +260,7 @@ main( int argc, char **argv )
     glutIdleFunc(*idle);
     glutReshapeFunc(reshape);
     glutMotionFunc(moveClick);
-    glutFullScreen();
+//    glutFullScreen();
 
     glewInit();
 
@@ -251,6 +268,7 @@ main( int argc, char **argv )
 
     glutDisplayFunc( display );
     glutKeyboardFunc( keyboard );
+//    LookAt();
     glutMainLoop();
     return 0;
 }

@@ -351,7 +351,7 @@
 	<stdio.h>
 	<GL/gl.h>
 
-1513328910 source:d:\kuliah\semester 5\grafkom\labs-examples\fp\fp.cpp
+1513437776 source:d:\kuliah\semester 5\grafkom\labs-examples\fp\fp.cpp
 	"Angel.h"
 	<GL/glut.h>
 	"ImageLoader.h"
@@ -372,5 +372,5 @@
 1504631808 d:\kuliah\semester 5\grafkom\labs-examples\include\gl\glut.h
 	"freeglut_std.h"
 
-1513293989 d:\kuliah\semester 5\grafkom\labs-examples\fp\imageloader.h
+1219388792 d:\kuliah\semester 5\grafkom\labs-examples\fp\imageloader.h
 
