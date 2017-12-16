@@ -85,7 +85,7 @@ void LookAt()
 {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  perspectiveGL(20.0,1000/500,1,5);
+  perspectiveGL(20.0,(double)glutGet(GLUT_WINDOW_WIDTH)/(double)glutGet(GLUT_WINDOW_HEIGHT),1,5);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -144,7 +144,6 @@ void displayEarth(){
     AmbientLighting();
     float x = cos((rotate)*3.14159265/180);
     float z = sin((rotate+180)*3.14159265/180);
-    printf("%f,%f\n",x,z);
     PointLight(x,0,z, 0, 1, 1);
     glRotatef(180,0.0,0.0,1.0);
     glTranslatef(0.0f, 0.0f, -1.0f);
@@ -222,18 +221,12 @@ keyboard( unsigned char key, int x, int y )
 }
 
 void reshape(int x, int y){
-/*    glViewport(0,0,windowWidth, windowHeight);
-    GLfloat rasio = windowWidth*1000/windowHeight;
-    rasio = rasio/1000;
-    printf("width = %i, height = %i, maka rasio %f\n",windowWidth, windowHeight, rasio);
-    projection = Frustum((rasio*-0.2), (rasio*0.2), -0.2, 0.2, 0.2, 2.0);*/
     if (y == 0 || x == 0) return;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    perspectiveGL(39.0,(GLdouble)x/(GLdouble)y,0.6,21.0);
+    perspectiveGL(20.0,(double)glutGet(GLUT_WINDOW_WIDTH)/(double)glutGet(GLUT_WINDOW_HEIGHT),1,5.0);
     glMatrixMode(GL_MODELVIEW);
     glViewport(0,0,x,y);  //Use the whole window for rendering
-
 }
 
 void moveClick(int x, int y){
