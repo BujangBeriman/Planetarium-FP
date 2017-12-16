@@ -4,10 +4,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above notice and this permission notice shall be included in all copies
  * or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,7 +30,7 @@ class Image {
 	public:
 		Image(char* ps, int w, int h);
 		~Image();
-
+		
 		/* An array of the form (R1, G1, B1, R2, G2, B2, ...) indicating the
 		 * color of each pixel in image.  Color components range from 0 to 255.
 		 * The array starts the bottom-left pixel, then moves right to the end
