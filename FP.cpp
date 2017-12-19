@@ -32,7 +32,7 @@ void perspectiveGL( GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFa
 void AmbientLighting(){
   glEnable(GL_LIGHTING);
 
-  double amb = .2;
+  float amb = .2;
   GLfloat global_ambient[] = {amb,amb,amb, 0.1};
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
 }
@@ -80,16 +80,19 @@ GLuint loadTexture(Image* image) {
 GLuint earthTexture, sunTexture, backgroundTexture; //The id of the textur
 GLUquadric *quad;
 GLfloat rotate;
+GLdouble fovy = 20.0, znear =1, zfar =5;
+GLdouble eyex = 0, eyey = 1, eyez = 2, centerx=0, centery=0, centerz=-1, upx=0, upy=1, upz=0;
+int mouse_state, mouse_button;
 
 void LookAt()
 {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  perspectiveGL(20.0,(double)glutGet(GLUT_WINDOW_WIDTH)/(double)glutGet(GLUT_WINDOW_HEIGHT),1,5);
+  perspectiveGL(fovy,(double)glutGet(GLUT_WINDOW_WIDTH)/(double)glutGet(GLUT_WINDOW_HEIGHT),znear,zfar);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-    gluLookAt(0, 2, 1, 0, 0, -1, 0, 1, 0);
+    gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
 }
 
 void backgroundRendering(){
@@ -229,13 +232,34 @@ void reshape(int x, int y){
     glViewport(0,0,x,y);  //Use the whole window for rendering
 }
 
-void moveClick(int x, int y){
-    GLfloat xmove = x*1000/windowWidth;
-    xmove = xmove/1000;
-    GLfloat ymove = y*1000/windowHeight;
-    ymove = ymove/1000;
-    printf("%i dan %i serta %i dan %i maka %f dan %f\n", x, y, windowWidth, windowHeight, xmove, ymove);
-    mat4 view = Translate((0.0+xmove-0.5)*2, (0.0-ymove+0.5)*2, -0.9);
+void motion(int x, int y){
+    int deltaX, deltaY;
+    if (mouse_button == GLUT_LEFT_BUTTON && mouse_state == GLUT_DOWN){
+        deltaX = x - deltaX;
+        deltaY = y - deltaY;
+        printf ("%f\n",eyex);
+        GLdouble dummyeyex, dummyeyey;
+        dummyeyex =sqrt((eyex*eyex) + (eyez*eyez))*sin(deltaX/500);
+        eyez = sqrt((eyex*eyex) + (eyez*eyez))*cos(deltaX/500);
+        eyex = dummyeyex;
+        dummyeyey =sqrt((eyey*eyey) + (eyez*eyez))*sin(deltaY/500);
+        eyez = sqrt((eyey*eyey) + (eyez*eyez))*cos(deltaY/500);
+        eyey = dummyeyey;
+    }
+    if (mouse_button == GLUT_LEFT_BUTTON && mouse_state == GLUT_UP){
+        deltaX = x;
+        deltaY = y;
+    }
+}
+
+void mouse(int button, int state, int x, int y){
+    mouse_state = state;
+    mouse_button = button;
+    if ((button == 3) || (button == 4))    {
+       if (state == GLUT_UP) return; // Disregard redundant GLUT_UP events
+       if (button == 3 && fovy>0)fovy-=2;
+       else fovy+=2;
+   }
 }
 
 //----------------------------------------------------------------------------
@@ -252,7 +276,8 @@ main( int argc, char **argv )
 //    glutTimerFunc(25,update,0);
     glutIdleFunc(*idle);
     glutReshapeFunc(reshape);
-    glutMotionFunc(moveClick);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
 //    glutFullScreen();
 
     glewInit();
