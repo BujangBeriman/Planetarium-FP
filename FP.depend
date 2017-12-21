@@ -351,10 +351,9 @@
 	<stdio.h>
 	<GL/gl.h>
 
-1513589910 source:d:\kuliah\semester 5\grafkom\labs-examples\fp\fp.cpp
+1513826050 source:d:\kuliah\semester 5\grafkom\labs-examples\fp\fp.cpp
 	"Angel.h"
 	<GL/glut.h>
-	"ImageLoader.h"
 	<windows.h>
 	<iostream>
 	<stdlib.h>
