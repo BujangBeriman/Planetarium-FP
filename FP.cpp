@@ -648,7 +648,7 @@ void reshape(int x, int y){
     if (y == 0 || x == 0) return;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    perspectiveGL(20.0,(double)glutGet(GLUT_WINDOW_WIDTH)/(double)glutGet(GLUT_WINDOW_HEIGHT),1,5.0);
+    perspectiveGL(fovy,(double)glutGet(GLUT_WINDOW_WIDTH)/(double)glutGet(GLUT_WINDOW_HEIGHT),znear,zfar);
     glMatrixMode(GL_MODELVIEW);
     glViewport(0,0,x,y);  //Use the whole window for rendering
 }
@@ -656,25 +656,6 @@ void reshape(int x, int y){
 GLdouble deltaZ, deltaY, deltaX;
 
 void motion(int x, int y){
-/*    int deltaX, deltaY;
-    if (mouse_button == GLUT_LEFT_BUTTON && mouse_state == GLUT_DOWN){
-        deltaX = x - deltaX;
-        deltaY = y - deltaY;
-        printf ("%f\n",eyex);
-        GLdouble dummyeyex, dummyeyey;
-        dummyeyex =sqrt((eyex*eyex) + (eyez*eyez))*sin(deltaX/500);
-        eyez = sqrt((eyex*eyex) + (eyez*eyez))*cos(deltaX/500);
-        eyex = dummyeyex;
-        dummyeyey =sqrt((eyey*eyey) + (eyez*eyez))*sin(deltaY/500);
-        eyez = sqrt((eyey*eyey) + (eyez*eyez))*cos(deltaY/500);
-        eyey = dummyeyey;
-    }
-    if (mouse_button == GLUT_LEFT_BUTTON && mouse_state == GLUT_UP){
-        deltaX = x;
-        deltaY = y;
-    }*/
-    // this will only be true when the left button is down
-      //you might need to adjust this multiplier(0.01)
       x = x-(glutGet(GLUT_WINDOW_WIDTH)/2);
       y = y-(glutGet(GLUT_WINDOW_HEIGHT)/2);
       theta += (x-oldX)*0.001f;
@@ -826,7 +807,6 @@ main( int argc, char **argv )
     glutReshapeFunc(reshape);
     glutMouseFunc(mouse);
     glutMotionFunc(motion);
-//    glutFullScreen();
 
     glewInit();
 
